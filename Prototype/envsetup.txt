@@ -1,0 +1,51 @@
+FOR CPU
+
+# 1. Create a clean Conda environment with Python 3.10
+conda create -y -n majorProject python=3.10
+
+# 2. Activate the environment
+conda activate majorProject
+
+# 3. Install official CPU-optimized PyTorch build
+conda install -y -c pytorch pytorch torchvision cpuonly
+
+# 4. Install JupyterLab, ipykernel, Streamlit, and all analysis libraries
+conda install -y -c conda-forge \
+    jupyterlab \
+    ipykernel \
+    numpy \
+    pandas \
+    matplotlib \
+    scikit-learn \
+    scikit-image \
+    lime \
+    tqdm \
+    streamlit
+
+# 5. Register the environment kernel to JupyterLab
+python -m ipykernel install --user --name majorProject --display-name "Python (majorProject - CPU)"
+
+# 6. Launch JupyterLab
+jupyter lab
+
+
+FOR NVIDIA GPU
+
+# 1. Remove only the broken majorProject environment
+conda deactivate
+conda remove -y -n majorProject --all
+
+# 2. Create fresh environment with Python 3.10
+conda create -y -n majorProject python=3.10
+
+# 3. Activate
+conda activate majorProject
+
+# 4. Install CUDA 12.1 PyTorch via Pip (Cleanest wheel binaries, no channel collisions)
+pip install torch torchvision --index-url https://download.pytorch.org/whl/cu121
+
+# 5. Install JupyterLab, ipywidgets (fixes tqdm warning), and ML utilities
+pip install jupyterlab ipywidgets ipykernel numpy pandas matplotlib scikit-learn scikit-image lime tqdm streamlit
+
+# 6. Register kernel to Jupyter
+python -m ipykernel install --user --name majorProject --display-name "Python (majorProject - GPU)"
